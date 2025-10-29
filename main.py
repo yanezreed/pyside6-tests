@@ -1,12 +1,15 @@
-from PySide6.QtWidgets import QApplication, QWidget
-
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 import sys
 
 # Following course example...
 
 app = QApplication(sys.argv)
 
-window = QWidget()
+window = QMainWindow()
+window.setWindowTitle("My App")
+
+button = QPushButton("Click Me")
+window.setCentralWidget(button)
 window.show()
 
 app.exec()
