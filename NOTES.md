@@ -151,6 +151,55 @@ notes:
 - "self.setCentralWidget(button)" is more pyside6 specific
 - it sets the object/widget "button" to the 'special area' of a "QMainWindow"
 - like i noted earlier there can only be one central widget
-- for more detailed specifics on various widgets i need to keep referring to the documentation.
+- for more detailed specifics on various widgets i need to keep referring to the documentation
 
 ---
+
+## Pyside Structure
+
+QApplication → QMainWindow → Central Widget (e.g. QWidget)
+└── Layout (e.g. QVBoxLayout)
+└── Child Widgets (buttons, labels, etc.)
+
+Note:
+
+- the code above is still not as... structured as it could be
+- by importing my button class into "main.py" to then be set as "self.setCentralWidget()"
+- i can use this method to avoid over complicating "main" improving readability
+
+---
+
+## Understanding Set-Up
+
+![notes fourth sc]("C:\Users\yanez\Desktop\Workspace Folder\assets\image-04.PNG")
+
+![notes fifth sc]("C:\Users\yanez\Desktop\Workspace Folder\assets\image-05.PNG")
+
+```python
+from PySide6.QtWidgets import QMainWindow, QPushButton
+
+class ButtonFrame(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Button Frame")
+        button = QPushButton("Press Here")
+        self.setCentralWidget(button)
+```
+
+- here i'm importing all the relevant classes into my new file "button_frame.py"
+- i repeat the process of accessing "QMainWindow" functionality through initialization
+- first initializing an object "init(self)" then accessing parents functionality through "super()"
+
+note (rubber ducking process):
+that unlike using a decorator i can just pass the parent class as a argument into the subclass,
+using "super().init" gives me access to the process the parent class executes (initializes) when
+creating its own objects.
+
+meaning that when "init(self)" is used an object is initialized and can technically then use all
+of the functionality/methods of the parent via "self."
+
+but because i have included "super().init" im passing the values/functionality which are given to
+the parent classes objects, with the difference being i now have the ability to include more and more
+of code ie. more values "self.value = 2" or more functionality by adding methods in this new subclass
+(which will have to be compatible with the combination of code given to the object from
+both the subclass and parent class initialization)...
