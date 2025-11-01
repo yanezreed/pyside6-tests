@@ -186,9 +186,15 @@ class ButtonFrame(QMainWindow):
         self.setCentralWidget(button)
 ```
 
-- here i'm importing all the relevant classes into my new file "button_frame.py"
-- i repeat the process of accessing "QMainWindow" functionality through initialization
-- first initializing an object "init(self)" then accessing parents functionality through "super()"
+note:
+
+- here i'm creating a button within the "QMainWindow" setting it to the centre via "self."
+- because the button is being set central, no other content is within the window
+- the "app" should be thought as the script/brain, and the widgets/window is whats visable
+
+* here i'm importing all the relevant classes into my new file "button_frame.py"
+* i repeat the process of accessing "QMainWindow" functionality through initialization
+* first initializing an object "init(self)" then accessing parents functionality through "super()"
 
 note (rubber ducking process):
 that unlike using a decorator i can just pass the parent class as a argument into the subclass,
@@ -203,3 +209,98 @@ the parent classes objects, with the difference being i now have the ability to 
 of code ie. more values "self.value = 2" or more functionality by adding methods in this new subclass
 (which will have to be compatible with the combination of code given to the object from
 both the subclass and parent class initialization)...
+
+note:
+
+- "Pyside6.QtWidgets" is a modal within pyside6, giving us access to widgets
+- "sys.argv" is used to pass commands to "QApplication"
+- "app = QApplication()" is executed using "app.exec()"
+- i should think of "QApplication" as the root of the tree (similar to html)
+- all events, such as a button click are listened for by the "QApplication" object
+- "app.exec()" is what catches an event when executed
+- recorrection: "app.exec()" functions not as a while loop, but rather similar to my c http server
+- by starting a "Qt event loop", blocks my python script and waits efficiently for system events
+- ie. mouse clicks, key presses, network, timers...
+- similar to my flask applications qt dispatches singals to the appropriate widget/object in my code
+- with these widgets only running when triggered by an event (like slot functions)
+- https://doc.qt.io/qt-6/qtwidgets-index.html
+
+---
+
+## Window details
+
+note:
+
+- by default widgets in pyside6 are "hidden"
+- using "window = QWidget()" -> "window.show()" I can create/reveal a widget inside my "QApplication"
+- structure; app("QMainWindow" "super()." -> "QPushButton" "self.setCentralWidget(button)")
+- by using separate files,
+
+## QMainWindow Class Documentation
+
+note:
+
+- "QMainWindow" provides the main ui framework
+- includes built in areas for; "QMenuBar", "QToolBar", "QDockWidget" and "QStatusBar"
+- "self.menuBar()" -> returns (and auto creates) the "QMenuBar"
+- i can use "menuBar().addMenu("&Name")" -> to create and returns a "QMenu"
+- add "QActions" to "QMenu" via "menu.addAction(action)"
+- "setMenuBar()" is "not needed" in typical pyside6 apps
+
+```python
+class MainWindow(QMainWindow):
+  def create_toolbar(self):
+      toolbar = self.addToolBar("Main")
+      toolbar.addAction("New")
+      toolbar.addAction("Open")
+      toolbar.addAction("Save")
+```
+
+![notes sixth sc]("assets\image-06.PNG")
+
+---
+
+## Structure Revisit
+
+note:
+
+- files split up into main/app, with "QApplication" being the conductor
+- the other files are essentially called upon classes with specific roles
+- "PySide6.QWidgets" (modual) -> "QMainWindow, QPushButton, QApplication"
+- each new class/widget i encounter, i should be researching via the documentation
+- to understand structure, purpose, and how it connects to the rest of the app
+- ie. "QMainWindow" allows me the structure to encapsulate a widget
+
+![notes seventh sc]("assets\image-07.PNG")
+
+- `window.setCentralWidget(button)` - centres button within the windows structure
+- `window.setWindowTitle(" ")` - inputs text within the title slot of "QMainWindow"
+- `button.setText(" ")` - button being the object created by "QPushButton"
+- "setText" is the inherited classes functionality being exploited
+
+## Personal Notes
+
+note:
+
+- import classes to reduce complexity, inheriting and building upon widgets to fit
+- i create physical widgets via objects initialized through instantiating a class
+- this is done via `def __init__(self):` -> `super.__init__()`
+- with "super." not ending with a ":" as im only importing the functionality...
+- and afterwards i want to include my own code (similar to linking when compiling)
+- by doing this, i can now access functionality from the parent/inherited class
+- `self.setWindowTitle(" ")` can be used in a class called w/e i want
+
+note:
+
+- to create the physical object, i need to always initialize the object via class
+- i then am able to access class specific methods through the use of the "." operator
+- ie. `button.setText(" ")` uses the "QPushButton" method through the object
+
+* lastly; i must ensure i only import the relevant modules/libraries into files
+* as wasting resources via importing "QApplication" into every file is unacceptable
+
+---
+
+## Signals and slots
+
+- signals produced on events to activate slots of executable code throughout my program
