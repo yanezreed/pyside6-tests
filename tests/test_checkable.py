@@ -1,6 +1,8 @@
 from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton
 import sys
 
+# Keeping all code in single file for test
+
 def button_checked():
     print("Button checked")
 

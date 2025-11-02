@@ -303,4 +303,96 @@ note:
 
 ## Signals and slots
 
-- signals produced on events to activate slots of executable code throughout my program
+- are a mechanism qt provides to link events with executables within program ie.
+
+* button-click/event (signal) -> executable section(s) of code (slot)
+
+* `button = QPushButton(" ")` -> `button.clicked.connect(button_clicked)`
+* ".clicked" being an method inside the object, triggered by the event...
+* ".connect" being the action taken, executing the "(button_clicked)" method
+
+## Experimentation
+
+- again with the idea of separating any logic related to the button/window from main
+- finding that by declaring the signal ".clicked.connect" within the imported class...
+- i can then "import" both the object and its reactive functionality into main.py
+- reducing complexity, and keeping all code related to the widget in one file
+
+note: to know what events can be utilised as signals, i must consult documentation
+usally however the actual signals can be found through "QtWidgets.QAbstractButton"
+which is a parent class to "QtWidgets".
+
+common signals include; `.clicked .pressed .released .toggled` (for checkable buttons)
+
+![notes eight sc]("assets\image-08.PNG")
+
+---
+
+note:
+
+- `.clicked` as a signal can also hold a value ie. "Flase" if not checked...
+- `button.setCheckable(True)` firstly makes the "QPushButton" object checkable
+- the checkable button will now toggle between two different states
+
+```python
+from PySide6.QtWidgets import QMainWindow, QSlider
+from PySide6.QtCore import Qt
+
+class SliderFrame(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.setTitle("Slider Frame")
+        self.setCentralWidget(slider)
+
+        # Creates a customized slider form QtCore
+
+        slider = QSlider(Qt.Horizontal)
+        slider.setMinimum(0)
+        slider.setMaximum(100)
+        slider.setValue(25)
+
+        # I need to remember to always call functions with `self`
+
+        slider.valueChanged.connect(self.slider_data)
+
+    def slider_data(self, data):
+        print("slider moved to:", data)
+```
+
+note:
+
+- here in a similar fashion i'm creating a slider with a signal/slot within the class
+- `.valueChanged` being the signal, and is connected to the slot via `.connect`
+- i need to remember to access all values/methods in the class using "self."
+
+- `slider = QSlider(Qt.Horizontal)` produces a horizontal slider
+- with "Qt.Horizontal" directing the slider to function left to right
+- whenever the slider is changed, it will "signal" the updated value
+- through; `valueChanged()`
+- other signals it can emit; `sliderPressed()`, `sliderMoved()`, `sliderReleased()`
+
+- by checking the documentation of `.valueChanged`, we can see that...
+- "PySide6.QtWidgets.QAbstractSlider.valueChanged(value)" <--
+- showing me that a value will be returned to the slot by the signal
+- representing what current value the slider has been changed too
+
+```python
+def respond_to_slider(self, data):
+  print("slider moved to: ", data)
+
+# Main bulk code
+
+slider.valueChanged.connect(respond_to_slider)
+```
+
+- so by connecting the signal `valueChanged` with the slot `respond_to_slider`
+- by the very nature of the signal the sliders value is sent to my function
+- lastly i need to keep in mind that `connect` takes the argument of the slot
+- so i can manipulate what will execute when a certain signal is emitted
+
+note:
+
+- similar to the value returned by the slider signal and passed to the slot
+- `button.setCheckable(True)` allocates the value true to the checked button
+- unchecking said button will return "false" to my slot via `.connect()`
+- meaning i am simply telling the button to keep track of the binary state
