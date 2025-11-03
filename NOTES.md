@@ -318,8 +318,8 @@ note:
 - i can then "import" both the object and its reactive functionality into main.py
 - reducing complexity, and keeping all code related to the widget in one file
 
-note: to know what events can be utilised as signals, i must consult documentation
-usally however the actual signals can be found through "QtWidgets.QAbstractButton"
+note: to know what events can be utilised as signals, i must consult documentation<br>
+usually however the actual signals can be found through "QtWidgets.QAbstractButton"<br>
 which is a parent class to "QtWidgets".
 
 common signals include; `.clicked .pressed .released .toggled` (for checkable buttons)
@@ -424,7 +424,15 @@ def mousePressEvent(self, event):
 
 ## QWidget Layout
 
+notes:
+
+1. `self.setWindowTitle` used to import a tab-like title for the window
+2. buttons + signals/slots are created (giving them functionality)
+3. to actually locate the widgets onto my `QWidget` (inherited) i need to add my widgets to a `QV(or H)BoxLayout` (any sort of layout) and apply this layout to the `QWidget` using `self.setlayout(this_layout)`<br>
+4. lastly i can create methods/slots to react to my events
+
 ```python
+
 from PySide6.QtWidgets import QPushButton, QWidget, QVBoxLayout
 
 class RockWidget(QWidget):
@@ -456,23 +464,16 @@ class RockWidget(QWidget):
         pass
 ```
 
-notes:
-
-1. `self.setWindowTitle` used to import a tab-like title for the window
-2. buttons + signals/slots are created (giving them functionality)
-3. to actually locate the widgets onto my `QWidget` (inherited)...
-   i need to add my widgets to a `QV(or H)BoxLayout` (any sort of layout)
-   and apply this layout to the `QWidget` using `self.setlayout(this_layout)`
-4. lastly i can create methods/slots to react to my events
+additional notes:
 
 - must remember that `QWidget` needs a layout to set widgets
-- as it requires structure to place the widgets where they need to be!
+- as it requires structure to place the widgets where they need to be!<br>
 
 - ie. `QHBoxLayout` orders the widgets top to bottom (vertically)
-- and `QVBoxLayout` orders the widgets right to left (horizontally)
+- and `QVBoxLayout` orders the widgets right to left (horizontally)<br>
 
 * `self.setlayout()` then sets the given layout (added as an argument)
-* as the widgets layout manager, controlling the placement of its child widgets
+* as the widgets layout manager, controlling the placement of its child widgets<br>
 
 * note: `self.setlayout()` is a method of the `QWidget` class
 
