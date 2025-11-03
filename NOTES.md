@@ -374,7 +374,9 @@ note:
 - by checking the documentation of `.valueChanged`, we can see that...
 - "PySide6.QtWidgets.QAbstractSlider.valueChanged(value)" <--
 - showing me that a value will be returned to the slot by the signal
-- representing what current value the slider has been changed too
+- representing what current value the slider has been changed to...
+
+* ie. 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7... it will trigger a response each value
 
 ```python
 def respond_to_slider(self, data):
@@ -396,3 +398,80 @@ note:
 - `button.setCheckable(True)` allocates the value true to the checked button
 - unchecking said button will return "false" to my slot via `.connect()`
 - meaning i am simply telling the button to keep track of the binary state
+
+---
+
+## QWidgets
+
+- widgets are the basic components used to create the ui using qt
+- all found in the "QWidgets" module
+
+when you inherit "QWidget" into your class, you gain:
+
+- your class becomes a visible widget that can be shown, hidden, resized, etc
+- can override "paintEvent()" using "QPainter to draw custom graphics
+
+- in terms of event handling, which is when a widget receives a message...
+- when an event occurs ie. mouse-click, key pressed, window resized
+
+```python
+def mousePressEvent(self, event):
+    print(f"Mouse clicked at: {event.pos()}")
+```
+
+- my widget/class can hold other widgets through "layout managers"
+- lastly if my widget has children, they are auto deleted when the parent is
+
+## QWidget Layout
+
+```python
+from PySide6.QtWidgets import QPushButton, QWidget, QVBoxLayout
+
+class RockWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Rock Widget")
+
+        initial_button = QPushButton("B1")
+        initial_button.clicked.connect(self.functionOne)
+
+        second_button = QPushButton("B2")
+        second_button.clicked.connect(self.functionTwo)
+
+      # Example of `horizontal` layout below
+      # widget_layout = QHBoxLayout()
+        widget_layout = QVBoxLayout()
+
+        widget_layout.addWidget(initial_button)
+        widget_layout.addWidget(second_button)
+
+      # `widget_layout` now holds both buttons
+        self.setlayout(widget_layout)
+
+
+    def functionOne(self):
+        pass
+
+    def functionTwo(self):
+        pass
+```
+
+notes:
+
+1. `self.setWindowTitle` used to import a tab-like title for the window
+2. buttons + signals/slots are created (giving them functionality)
+3. to actually locate the widgets onto my `QWidget` (inherited)...
+   i need to add my widgets to a `QV(or H)BoxLayout` (any sort of layout)
+   and apply this layout to the `QWidget` using `self.setlayout(this_layout)`
+4. lastly i can create methods/slots to react to my events
+
+- must remember that `QWidget` needs a layout to set widgets
+- as it requires structure to place the widgets where they need to be!
+
+- ie. `QHBoxLayout` orders the widgets top to bottom (vertically)
+- and `QVBoxLayout` orders the widgets right to left (horizontally)
+
+* `self.setlayout()` then sets the given layout (added as an argument)
+* as the widgets layout manager, controlling the placement of its child widgets
+
+* note: `self.setlayout()` is a method of the `QWidget` class
