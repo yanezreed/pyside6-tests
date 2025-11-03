@@ -475,3 +475,59 @@ notes:
 * as the widgets layout manager, controlling the placement of its child widgets
 
 * note: `self.setlayout()` is a method of the `QWidget` class
+
+---
+
+```python
+from PySide6.QtWidgets import QSlider, QWidget, QVBoxLayout, QLabel
+from PySide6.QtCore import Qt
+
+class RockWidget(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Rock Widget")
+
+        self.label = QLabel("Height & Width")
+
+        self.initial_sli = QSlider(Qt.Horizontal)
+      # valueChanged signal insteaad of clicked here
+        self.initial_sli.sliderReleased.connect(self.functionOne)
+        self.initial_sli.setMinimum(0)
+        self.initial_sli.setMaximum(100)
+        self.initial_sli.setValue(25)
+
+        self.second_sli = QSlider(Qt.Horizontal)
+        self.second_sli.sliderReleased.connect(self.functionTwo)
+        self.second_sli.setMinimum(0)
+        self.second_sli.setMaximum(100)
+        self.second_sli.setValue(25)
+
+      # Example of `horizontal` layout below
+      # widget_layout = QHBoxLayout()
+        widget_layout = QVBoxLayout()
+
+        widget_layout.addWidget(self.label)
+        widget_layout.addWidget(self.initial_sli)
+        widget_layout.addWidget(self.second_sli)
+
+        self.setLayout(widget_layout)
+
+
+    def functionOne(self):
+        hdata = self.initial_sli.value()
+        print(f"Height = {hdata}")
+
+    def functionTwo(self):
+        wdata = self.second_sli.value()
+        print(f"Width = {wdata}")
+```
+
+## SliderRealeased Experiment
+
+notes:
+
+- by using the `self.` before creating the slider in my class
+- im effectively inheriting the classes attributes to my own class/object
+- meaning on a event such as `sliderReleased` which is a signal for the slider class
+- in my slot/function, by accessing `self` i am able to go into that objects value
+- `self.initial_sli.value()` to access that value, to then use it however i may
