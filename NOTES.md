@@ -532,3 +532,60 @@ notes:
 - meaning on a event such as `sliderReleased` which is a signal for the slider class
 - in my slot/function, by accessing `self` i am able to go into that objects value
 - `self.initial_sli.value()` to access that value, to then use it however i may
+
+---
+
+## QMainWindow Class
+
+- gives me access to a layout including; menus, toolbars, status bars and actions
+- these components reside at predetermined locations on the layout
+- to build on `QMainWindow` i will create a class, inheriting its functionality
+
+```python
+from PySide6.QtWidgets import QMainWindow
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("MainWindow")
+
+        # Functionality inherited from QMainWindow
+        menu_bar = self.menuBar()
+        file_menu = menu_bar.addMenu("&File")
+        quit_action = file_menu.addAction("Quit")
+        quit_action.triggered.connect(self.quit)
+
+        edit_menu = menu_bar.addMenu("&Edit")
+
+        edit_menu.addAction("Copy")
+        edit_menu.addAction("Cut")
+        edit_menu.addAction("Paste")
+        edit_menu.addAction("Undo")
+        edit_menu.addAction("Redo")
+
+        menu_bar.addMenu("&Window")
+        menu_bar.addMenu("&Setting")
+        menu_bar.addMenu("&Help")
+```
+
+notes:
+
+- diving into how i can set up a menu-bar
+
+1. `menu_bar = self.menuBar()` taps into the inherited class to create a menu object
+2. `file_menu = menu_bar.addMenu("&File")` similarly allows me to create a file menu
+   which can be seen through examples such as photoshop, word or chrome...
+   this is achieved by tapping into the menu/objects functionality calling `add.menu`
+   and passing in the argument `(&File)`, producing a new object `file_menu`
+3. for `quit_action = file_menu.addAction(self.quit)` a `QAction` is created...
+   when the action is triggered, because it has been created with `.addaction` and...
+   the provided callable `self.quit` when the action is clicked the method is called
+
+- note: `QAction` is an object where it can be triggered by multiple ways -> method
+
+4. ie. `quit_action.triggered.connect(self.quit)` is put in place to connect the
+   object/"QAction" with the slot/method via the use of `.triggered`
+5. i then am adding extra actions, via the use of `.addAction` keyword
+   these actions are inside the "edit" file in the menu, accessed via the object
+6. lastly im adding extra files to the `menu_bar` itself
