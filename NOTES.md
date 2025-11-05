@@ -27,7 +27,7 @@ regardless of the operating system (which could change later).
 
 ## Basic Example
 
-![notes first sc](assets\image-01.png)
+![notes first sc](assets\image-01.PNG)
 
 ```python
 from PySide6.QtWidgets import QApplication, QWidget
@@ -109,7 +109,7 @@ notes python, c++ (helping me understand via my c code knowledge):
 
 _(calling "QMainWindow" in python will create a window,C++ is different)_
 
-![notes second sc](assets\image-02.png)
+![notes second sc](assets\image-02.PNG)
 
 _("window.setCentralWidget(button)" is necessary here as)_
 
@@ -589,3 +589,286 @@ notes:
 5. i then am adding extra actions, via the use of `.addAction` keyword
    these actions are inside the "edit" file in the menu, accessed via the object
 6. lastly im adding extra files to the `menu_bar` itself
+
+```python
+    toolbar = QToolBar("My main toolbar")
+    toolbar.setIconSize(QSize(16,16))
+    self.addToolBar(toolbar)
+```
+
+note:
+
+- `toolbar = QToolBar` allows me to create a object
+- `.setIconSize()` allows me to go inside the object and customize it
+- using `self.addToolBar(toolbar)` im adding what ive created above to `QMainWindow`
+
+---
+
+```python
+class MainWindow(QMainWindow):
+    def __init__(self, app):
+        super().__init__()
+        # Used to exit later on
+        self.app = app
+
+        self.setWindowTitle("Main Window")
+
+        menu_bar = self.menuBar()
+        file_menu = menu_bar.addMenu("&File")
+```
+
+note:
+
+- reminder; `.menuBar` is one of many functions in `QMainWindow`
+- these are always accessed through the use of `self.`
+- as the object/class is inheriting `QMainWindow`
+- the class is an extension of itself, with extra functionality
+
+Now we have a menu with a "File" option but with nothing inside of it
+
+note:
+
+- `.addAction("Anything")` allows me to add options to the `file_menu` object
+- reminder; `file_menu = menu_bar` + `.addMenu("&File")` creates the object
+
+```python
+        menu_bar = self.menuBar()
+        file_menu = menu_bar.addMenu("&File")
+        quit_action = file_menu.addAction("Quit")
+        quit_action.triggered.connect(self.quit_method)
+
+    def quit_method(self):
+        self.app.quit()
+```
+
+note:
+
+1. `menu_bar` is created (the actual widget menu bar)
+2. `file_menu` is created by adding `&File` to the `menu_bar` itself
+3. `quit_action` is the QAction object created by adding the option "Quit" to the `&File`
+4. the QAction is used to connect via the signal `triggered` to my method
+5. `self.app.quit()` closes app
+
+---
+
+## Toolbar
+
+```python
+        toolbar = QToolBar("Main Toolbar")
+        toolbar.setIconSize(QSize(16, 16))
+        self.addToolBar(toolbar)
+```
+
+1. toolbar created, i can now aadd actions, widgets and separators...
+2. `QSize` used to determine size in locked location in `QMainWindow` layout
+3. `self.addToolBar(toolbar)` adds the widget to the main window
+
+```python
+        action1 = QAction("Action", self)
+        action1.setStatusTip("Status Message")
+        action1.triggered.connect(self.toolbar_button_click)
+        toolbar.addAction(action1)
+```
+
+4. creates a QAction object, which is a user invokable command
+
+- it appears as a label/text for the user (in this case within the tool bar)
+- takes a second argument of "self", so the action is owned by the window
+- which is extremely important as it means the action will be cleaned along with the parent
+
+5. `action1.setStatusTip("Status Message")` sets a status tip for the action
+6. next; i create a signal `triggered` to a slot `self.toolbar_button_click`
+7. adds the action instance to the toolbar as a clickable item
+
+```python
+    def toolbar_button_click(self):
+        print("Triggered")
+```
+
+- next im again adding a QAction to my toolbar, but this time in the form of an icon not text
+
+8. using `action2 = QAction(QIcon("start.png"), "Action Two", self)`, with three arguments
+
+- the first argument, loads an image file to the toolbar button (visual for user)
+
+* the second gives a text label along side the icon
+* the third `self` ensures the widget is cleaned up alongside the parent
+
+9. `action2.setStatusTip("Status message for action two!")` again sets a status tip (when hovered)
+10. `action2` here is set a signal/slot, connecting to `self.` + method when triggered
+11. `action2.setCheckable(True)` makes the action checkable
+
+- which effectively turning the button into a toggle (boolean)
+- slots/methods can query the state of the button via
+
+```python
+def toolbar_button_click(self, checked):
+    print("Checked:", checked)
+```
+
+12. lastly `toolbar.addAction(action2)` sets the action to the toolbar
+
+- extra note; if i want to see what signals can be used for each action, i need to check the docs
+- ie. "QAction docs", will also show signal parameters in/out
+
+```python
+        toolbar.addSeparator()
+        toolbar.addWidget(QPushButton("Click here"))
+```
+
+- i am also able to add a separator for the tool bar and include other widgets
+- these objects/methods are all accessed via the tool bar object/class
+
+---
+
+## Status bar
+
+```python
+        self.setStatusBar(QStatusBar(self))
+
+    def toolbar_button_click(self):
+        self.statusBar().showMessage("Something Happening", 3000)
+```
+
+notes:
+
+- here i am creating a status bar through the use of the class `QMainWindow`
+- the bar is created via a method as there is a dedicated location for the widget within its layout
+- ie. status bar lives at the bottom left of the MainWindow
+- is designed to give brief updates/hints (ready, saving file)...
+
+- when a method is triggered via any means
+- i can access the status bar widget via `self.` and command it to display a message
+- a string and a time limit are taken as arguments (3000 milliseconds here)
+
+---
+
+- note: items which have a dedicated location on QMainWindows layout are all called via `self.`
+- other widgets on the other hand are called through imported classes
+- these widgets are then set to locations on the QMainWindow or will not be show
+- ie.
+
+```python
+        button1 = QPushButton("Test")
+        button1.clicked.connect(self.button_test)
+        self.setCentralWidget(button1)
+```
+
+![notes nine sc]("assets\image-09.PNG")
+
+---
+
+## QMessageBox
+
+- is a class i can use to set up temporary messages boxes for the user
+- which can contain QPushButtons (ie. "ok", "cancel")
+
+```python
+    def button_clicked(self):
+        message = QMessageBox()
+        message.setMinimumSize(700,200)
+        message.setWindowTitle("Message Title")
+        message.setText("Something happened")
+        message.setInformativeText("What would you prefer?")
+        message.setIcon(QMessageBox.Critical)
+        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        message.setDefaultButton(QMessageBox.Ok)
+        ret = message.exec()
+        if ret == QMessageBox.Ok:
+            print("User chose Ok")
+        else:
+            print("User chose Cancel")
+```
+
+notes:
+
+1. method is defined, within the MainWindow class, will be ran via connection
+2. `QMessageBox()` object created
+3. minimum size set in pixels
+4. title is set + primary text within the box `message.setText("")`
+5. `message.setInformativeText("")` simply adds a secondary line
+6. `message.setIcon(QMessageBox.Critical)` -
+
+- sets an icon for the message box; ie. `Information`, `Warning`, `Critical` or `Question`
+
+7. `message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)` adds buttons + text
+8. `message.setDefaultButton(QMessageBox.Ok)` allows me to select a default button, via "."
+
+9. `ret = message.exec()` displays the message box, pausing execution until the user clicks an option
+10. depending on the option chosen, "QMessage.PickedOption" is returned and passed to the code below
+11. once an option is selected the chosen path is executed... (note "ret" short for return)...
+
+```python
+        button_critical = QPushButton("Critical")
+        button_critical.clicked.connect(self.button_clicked)
+        self.setCentralWidget(button_critical)
+```
+
+- to display the message box to the user i can connect it via a push button
+
+---
+
+## QVBoxLayout
+
+note:
+
+- to display all of these buttons i might want to hold them within a widget
+- by making a new file, class and inheriting QWidget functionality
+- i will be able to import the entire thing as a module
+
+- importantly i will need a layout to accommodate these buttons correctly
+- a good design choice would be to hold them within a `QVBoxLayout`
+
+```python
+        layout = QVBoxLayout()
+
+        layout.addWidget(button_critical)
+        layout.addWidget(button_question)
+        layout.addWidget(button_information)
+        layout.addWidget(button_warning)
+        layout.addWidget(button_about)
+
+        self.setLayout(layout)
+```
+
+1. i first create a object from the chosen layout class
+2. buttons are created through widgets, via the layout class methods
+3. selecting `QWidget` via `self.` im able to set the layout to the widget
+
+note: by doing this there is no need to individually assign push buttons to central widget
+
+```python
+        button_critical = QPushButton("Critical")
+        button_critical.clicked.connect(self.button_critical)
+```
+
+- this is all thats needed, as they are added to the `QVBoxLayout`
+- my entire self created class (with QWidget as a parent class), to my main file
+- meaning all buttons and functionality will be imported as one
+
+```python
+        test_widget = TestWidget()
+        self.setCentralWidget(test_widget)
+        self.resize(800, 600)
+```
+
+1. after creating methods for each of my buttons (explained above)
+2. i can now import this class into w/e file i want
+3. in this example i am importing it to my `QMainWindow` class
+4. using my `QWidget` class i should create a object
+5. then setting said object to the parents layout, again using `self`
+6. from here i can edit it it further as an object
+
+```python
+def button_critical(self):
+    ret = QMessageBox.critical(
+        self,
+        "Message Title",
+        "Something happened\n\nWhat would you prefer?",
+        QMessageBox.Ok | QMessageBox.Cancel,
+        QMessageBox.Ok
+    )
+    print("User chose Ok" if ret == QMessageBox.Ok else "User chose Cancel")
+```
+
+note: above is the short hand way to create methods, but does exactly the same thing

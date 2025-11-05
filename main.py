@@ -1,14 +1,66 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
-from rock_widget import RockWidget
-import sys
+from PySide6.QtWidgets import QApplication
+from mainwindow import MainWindow
+from sys import argv
 
-app = QApplication(sys.argv)
+app = QApplication(argv)
 
-window = RockWidget()
-window.setFixedSize(300, 200)
-
+# Here is where i pass in app!
+window = MainWindow(app)
 window.show()
 app.exec()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Second Version
+
+# from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+# from rock_widget import RockWidget
+# import sys
+
+# app = QApplication(sys.argv)
+
+# window = RockWidget()
+# window.setFixedSize(300, 200)
+
+# window.show()
+# app.exec()
 
 
 
