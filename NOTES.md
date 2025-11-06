@@ -889,3 +889,120 @@ note: above is the short hand way to create methods, but does exactly the same t
 ![notes tenth sc]("assets\image-10.PNG")
 
 - meaning `clicked` is only confirmed after both pressed + released have completed
+
+## QLabel and QLineEdit
+
+- allows me to create a section where the user can write a single line of text, `QLineEdit`
+- `QLabel` allows me to include text beside it to structure my ui
+
+![notes eleventh sc]("assets\image-11.PNG")
+
+```python
+        self.setLayout(QHBoxLayout)
+
+        label = QLabel("Fullname: ")
+        self.line_edit = QLineEdit()
+```
+
+- setting these widgets/objects up is easy, via there imported classes
+
+```python
+    self.line_edit.textChanged.connect(self.text_changed)
+```
+
+- by setting `QLineEdit` to the widget `self`
+- when the `textChanged` i can connect the signal to my method/slot
+
+- This is a signal emitted by QLineEdit whenever the text cursor position changes
+- ie. when the user moves the cursor with arrow keys, clicks the mouse inside the field
+- or even edits the text inside the box...
+- note; again all of these signals are coded in the class `QLineEdit` and are also emitted
+
+```python
+    self.line_edit.editingFinished.connect(self.editing_finished)
+    self.line_edit.returnPressed.connect(self.return_pressed)
+```
+
+- `editingFinished` simply means, when the user presses "enter"
+- `returnPressed` is exactly the same...
+
+```python
+    self.line_edit.selectionChanged.connect(self.selection_changed)
+```
+
+- again a signal is emitted whenever the "text selection" changes
+- ie. user selects text with mouse or keyboard
+- the selection of text is cleared (e.g clicking elsewhere or moving the cursor)
+
+- unlike `cursorPositionChanged` the signal does not carry arguments
+- it will only notify the user when something has changed, nothing more
+
+```python
+    self.line_edit.textEdited.connect(self.text_edited)
+```
+
+- lastly this `QLineEdit` signal emits when the text is altered
+- this could be through typing, pasting or deleting
+
+---
+
+## QLineEdit Connections
+
+```python
+    def button_clicked(self):
+        print("Fullname: ", self.line_edit.text())
+
+        self.text_holder_label.setText(self.line_edit.text)
+```
+
+- allows me to grab the text within the `QLineEdit` via its objects `.text` method
+- secondly i can access a widget within the `QWidget` via `self`...
+- using `.setText` and the argument of `.text` within another `self` object
+- i can transfer the `.text` value across
+
+```python
+    self.line_edit.cursorPositionChanged.connect(self.cursor_position_changed)
+
+    def cursor_position_changed(self, old, new):
+        print("old cursor position: ", old, "-new cursor position:", new)
+```
+
+- `cursorPositionChanged` signal, carries two arguments to the slot
+- the old position of the cursor and the new, each time it is moved/triggered
+
+```python
+    self.line_edit.editingFinished.connect(self.editing_finished)
+
+    def editing_finished(self):
+        print("Editing finished")
+```
+
+- quite simply when "enter" or clicks elsewhere/tabs out, a signal is emitted
+- what ever code at the slot is executed, `returnPressed` is only "enter" activated
+
+```python
+    self.line_edit.selectionChanged.connect(self.selection_changed)
+
+    def selection_changed(self):
+        print("Selection changed: ", self.line_edit.selectedText())
+```
+
+- `selectionChanged` is triggered w/e the user changes text selection inside `QLineEdit`
+- triggered by the user selecting some text
+- or through moving the cursor to select a different portion of the text
+- each time a signal is emitted, the currently selected substring inside the widget
+- is available through the `QLineEdit` method `.selectedText()`
+- if nothing is selected, the method returns an empty string -> ""
+
+```python
+    self.line_edit.textEdited.connect(self.text_edited)
+
+    def text_edited(self, new_text):
+        print("Text edited, new text: ", new_text)
+```
+
+- `textEdited` signal sends one argument to the slot
+- it is triggered/emitted only when the user manually edits the text
+- again via typing, deleting or pasting in the field...
+- each time the value is changed within the box, the value itself is sent as an argument
+- meaning the slot will receive the text as it is being written or deleted
