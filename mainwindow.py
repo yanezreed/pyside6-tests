@@ -51,7 +51,6 @@ class MainWindow(QMainWindow):
 
         test_widget = TestWidget()
         self.setCentralWidget(test_widget)
-        self.setWindowTitle("Main Window with TestWidget")
         self.resize(800, 600)
 
         # button1 = QPushButton("Test")
@@ -79,16 +78,16 @@ class MainWindow(QMainWindow):
 
     # Creating message box
     # def button_clicked(self):
-        message = QMessageBox()
-        message.setMinimumSize(700,200)
-        message.setWindowTitle("Message Title")
-        message.setText("Something happened")
-        message.setInformativeText("What would you prefer?")
-        message.setIcon(QMessageBox.Critical)
-        message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        message.setDefaultButton(QMessageBox.Ok)
-        ret = message.exec()
-        if ret == QMessageBox.Ok:
-            print("User chose Ok")
-        else:
-            print("User chose Cancel")
+      #  message = QMessageBox()
+      #  message.setMinimumSize(700,200)
+      #  message.setWindowTitle("Message Title")
+      #  message.setText("Something happened")
+      #  message.setInformativeText("What would you prefer?")
+      #  message.setIcon(QMessageBox.Critical)
+      #  message.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+      #  message.setDefaultButton(QMessageBox.Ok)
+      #  ret = message.exec()
+      #  if ret == QMessageBox.Ok:
+      #      print("User chose Ok")
+      #  else:
+      #      print("User chose Cancel")

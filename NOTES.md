@@ -872,3 +872,20 @@ def button_critical(self):
 ```
 
 note: above is the short hand way to create methods, but does exactly the same thing
+
+---
+
+## QPushButton Signals Indepth
+
+- `clicked`, `presses`, and `released` are all common signals used to connect to slots
+- pressed & released are key when designing drawing applications...
+- `toggled` is related to `clicked`([checked=false])
+- as it is triggered whenever the state of the button is changed within the program
+- note; the button needs to be set as a "checkable" before hand, for this to work
+
+- testing the order of events in terms of signals on an individual button
+- i found the order to be; pressed -> released -> clicked
+
+![notes tenth sc]("assets\image-10.PNG")
+
+- meaning `clicked` is only confirmed after both pressed + released have completed
