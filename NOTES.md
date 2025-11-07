@@ -1045,5 +1045,114 @@ note:
 - we are able to always access these widgets later on to add customization...
 - ie. while `layout.addWidget(label)` is clear/readable
 - later on i will be unable to access `label` as a widget, as while it is still stored
-- `layout` stores widgets/variables by refference rather than value
-- meaning the code can be access but not altered after assignment
+- `layout` stores widgets/variables by reference rather than value
+- meaning the code can be accessed but not altered after assignment
+
+---
+
+## QLineEdit Other Signals
+
+- `cursorPositionChanged` as we know includes two cursor values; int oldPos and newPos...
+- `editingFinished` emitted when widget loses focus after text was modified
+- `inputRejected` emitted when input is rejected due to validator, used to error msg user
+- `returnPassed` emitted when "enter" or "return" while widget in focus
+- `selectionChanged` emitted when highlighted text changes, useful for copy buttons...
+- `textChanged` includes one value; str text, holding the current value after any iteration
+- `textEdited` is exactly the same bar it will not react to programmatic changes
+- extra note; meaning if `setText` is executed on the widget, unlike `textChanged`
+- the signal will not be triggered and a new string will not be emitted to the slot
+
+## Layout Note
+
+- when designing my pages, i can layer horizontal and vertical layouts on top of each other
+
+```python
+
+    h_layout = QHBoxLayout()
+    h_layout.addWidget(label)
+    h_layout.addWidget(self.line_edit)
+
+    v_layout = QVBoxLayout()
+    v_layout.addLayout(h_layout)
+    v_layout.addWidget(button)
+    v_layout.addWidget(self.text_holder_label)
+
+    self.setLayout(v_layout)
+```
+
+- the key to this structure being line five
+- as im adding `.addLayout(h_layout)` to my vertical layout, stacking my horizontal layout
+
+## Self Reminder
+
+- im creating a layout
+- filling the page with widgets produced by imported classes
+- i can use signals from these widgets to call slots/methods
+- i can access values/variables from my widgets within my methods to achieve a desired effect
+- ie. if button clicked -> slot: print "name: " + `self.line_edit.text()` (accessing object)
+
+---
+
+## QTextEdit
+
+- `QTextEdit` offers large scale text box rather than one single line
+- offering capabilities such as copy, cut, paste, undo, redo, set plaintext, set html and clear
+
+```python
+    self.text_edit = QTextEdit()
+    self.text_edit.textChanged.connect(self.text_changed)
+
+    copy_button = QPushButton("Copy")
+    copy_button.clicked.connect(self.text_edit.copy)
+```
+
+- one key benefit to `QTextEdit` is that there are many pre-made slots for these functions
+- ie. `self.text_edit.copy` allows me to access the widget and then the `.copy` slot
+
+note:
+
+- `self.text_edit = QTextEdit()` by storing the object in the class, i have access throughout
+- allowing me to first trigger widgets `copy_button.clicked.connect(self.text_edit.cut)`
+- then calling not my own slots, but premade -> `self.text_edit.cut`
+- importantly accessing this functionality through the object created by `QTextEdit`
+- meaning whatever is needed from the premade slot, will be accessible via the widgets values
+
+```python
+    h_layout = QHBoxLayout()
+    h_layout.addWidget(copy_button)
+    h_layout.addWidget(cut_button)
+    h_layout.addWidget(paste_button)
+    h_layout.addWidget(undo_button)
+    h_layout.addWidget(redo_button)
+    h_layout.addWidget(set_plain_text_button)
+    h_layout.addWidget(set_html_button)
+    h_layout.addWidget(clear_button)
+
+    v_layout = QVBoxLayout()
+    v_layout.addLayout(h_layout)
+    v_layout.addWidget(self.text_edit)
+
+    self.setLayout(v_layout)
+```
+
+- layout wise, in this example im choosing to do the same again
+- by creating a horizontal layout for the buttons, i can then add this object to `QVBoxLayout`
+- setting this layered structure as the layout of the `QWidget` itself
+
+## Plain Text, HTML
+
+- unlike the other widgets i have used so far `QLineEdit` does not have a `.text()` method
+- as its designed to hold "rich text" which differs to plain text in many ways
+- being able to hold text + embedded formatting instructions ie. styles, fonts, colours and images
+- being held as html or markdown rather that a `.txt` file
+- (not held as a string in storage, rather a tree of nodes)...
+
+- so when accessed via the `.toPlainText()` method, all detail is lost in the conversion
+- alternatively `.toHtml()` can display/format html or plane text values
+- ie. plain text might output `<p style="margin-top:0; margin-bottom:0;">Hello</p>`
+- and if the input is "rich text", it can be passed without alteration to other parts of my program
+
+- summary; both of these `.to` methods are used to grab text from a widget in either type of format
+- `QTextEdit` has alot of methods and signals detailed out in the documentation for future programs!
+
+---
