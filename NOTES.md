@@ -1006,3 +1006,44 @@ note: above is the short hand way to create methods, but does exactly the same t
 - again via typing, deleting or pasting in the field...
 - each time the value is changed within the box, the value itself is sent as an argument
 - meaning the slot will receive the text as it is being written or deleted
+
+---
+
+## Second Look At Layout
+
+```python
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        label = QLabel("Fullname: ")
+        self.line_edit = QLineEdit()
+        self.text_holder_label =
+
+        layout.addWidget(label)
+        layout.addWidget(self.line_edit)
+        layout.addWidget(self.text_holder_label)
+```
+
+1. i create an object using the imported class of `QVBoxLayout` (or H)...
+2. accessing `QWidget` via `self`, i set its layout to my objects value `QVBoxLayout`
+3. i create a `QLabel` object, which is simply a line of text
+4. accessing `QWidget` again, im storing `QLineEdit` within `self`
+
+- remember that this is done in the same way as i would store a int value
+- ie. `self.value` = 13, `QWidget` simply stores the value to be accessed through it
+- note; it is an object created by `QLineEdit` not the code of the class
+- effectively the widget/lineedit box is being held
+
+5. again, `QWidget` is accessed to store the object of the widget class `QLabel`
+
+6) this time the `layout` object is accessed which itself is being stored within `QLabel`
+7) all three objects are now stored within the layout object inside the `QWidget`
+
+note:
+
+- by first storing `QLineEdit()` and `QLabel("")` within the `QWidget` or `self`
+- we are able to always access these widgets later on to add customization...
+- ie. while `layout.addWidget(label)` is clear/readable
+- later on i will be unable to access `label` as a widget, as while it is still stored
+- `layout` stores widgets/variables by refference rather than value
+- meaning the code can be access but not altered after assignment

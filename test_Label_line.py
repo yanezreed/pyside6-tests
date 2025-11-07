@@ -1,16 +1,22 @@
-from PySide6.QtWidgets import QApplication, QWidget, QHBoxLayout, QLabel, QLineEdit
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit
 from sys import argv
 
 class TestHolder(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setLayout(QHBoxLayout)
+        layout = QVBoxLayout()
+        self.setLayout(layout)
 
         label = QLabel("Fullname: ")
         self.line_edit = QLineEdit()
+        self.text_holder_label = QLabel("")
 
-        self.line_edit.textChanged.connect(self.text_changed)
+        layout.addWidget(label)
+        layout.addWidget(self.line_edit)
+        layout.addWidget(self.text_holder_label)
+
+        self.line_edit.textChanged.connect(self.text_change)
 
         self.line_edit.cursorPositionChanged.connect(self.cursor_position_changed)
 
@@ -45,3 +51,13 @@ class TestHolder(QWidget):
     def text_edited(self, new_text):
         print("Text edited, new text: ", new_text)
     
+
+def main():
+    app = QApplication()
+    window = TestHolder()
+    window.show()
+    app.exec()
+
+
+if __name__ == "__main__":
+    main()
