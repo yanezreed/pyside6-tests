@@ -1156,3 +1156,67 @@ note:
 - `QTextEdit` has alot of methods and signals detailed out in the documentation for future programs!
 
 ---
+
+## Qlabel & Images
+
+- using `QLabel` again, i have the ability to display images
+- the image itself is required to be converted by the `QPixmap` function...
+- and stored as a pixel map within the label object
+- note; `QPixmap` is stored in the `PySide6.QtGui` module
+
+```python
+    image = QLabel()
+    image.setPixmap(QPixmap("assets\test_run.PNG"))
+
+    layout = QVBoxLayout()
+    layout.addWidget(image)
+
+    self.setLayout(layout)
+```
+
+---
+
+## Size Policies (& Stretches)
+
+- size policy is a property you can apply to your widgets that
+- determines their behaviour when the user interface grows/shrinks
+- ie. if the window grows, what do the widgets do themselves?
+
+- stretch as a concept is a property that defines how many units each widget will occupy in a layout
+- ie. one button may be given twice the width of another (and this is done via a stretch)
+- these stretch proportions are held no matter how the window is altered...
+
+```python
+    line_edit.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+```
+
+- above is an example of accessing the `setSizePolicy` of my widget, in this case a `QLineEdit` object
+- and adding two arguments to `setSizePolicy`, altering the objects behaviour when the widget is stretched
+- the first argument details how i want the object to react horizontally via either `fixed` or `expanding`
+- the second argument details how i want the object to react vertically
+
+- note; by default my widgets will not expand
+
+* if i was to set my "line edits" vertical behaviour to `expanding`
+* the widget will inturn attempt to take up as much space in the layout as possible
+
+## Stretches Specifically
+
+- note; while "size policies" dictate how the object behaves, stretches dictate relative size
+- stretches are applied through the `addWidget()` method, originating from some sort of `Q..Layout()` object
+
+```python
+    button_one = QPushButton("One")
+    button_two = QPushButton("Two")
+    button_three = QPushButton("Three")
+
+    temp_layout = QHBoxLayout()
+    temp_layout.addWidget(button_one, 2)
+    temp_layout.addWidget(button_two, 1)
+    temp_layout.addWidget(button_three, 1)
+```
+
+- note; without this intervention widgets will attempt to obtain an equal amount of space within the layout
+- (this may not be apparent until the window is stretched, as orginally the widgets will be at default size)
+
+---
