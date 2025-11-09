@@ -1291,7 +1291,11 @@ def object_function(self, checked):
         self.setLayout(main_layout)
 ```
 
-## Working On This! (not finished)
+- i now have a window with an organised `QGroupBox` with checkable buttons
+- which when selected connect with their slots and print an outcome to the terminal
+- note; other signals include `clicked`, `pressed` and `released`
+
+## Radio Buttons
 
 note:
 
@@ -1300,6 +1304,11 @@ note:
 - the radio buttons are then declared via `.addButton()` on the `QButtonGroup(self)`
 - including the `group.setExclusive(True)` to confirm this characteristic
 
+note:
+the difference between `QGroupBox` and `QButtonGroup` is that button group visually
+does not effect the widgets or give them a layout, however it does in fact
+logically group them together along with the instruction `group.setExclusive(True)`
+
 ```python
     group = QButtonGroup(self)
     group.addButton(1)
@@ -1307,3 +1316,21 @@ note:
     group.addButton(3)
     group.setExclusive(True)
 ```
+
+- once logically the buttons are grouped together
+- i can create a layout ie. `QVBoxLayout` and use `.addWidget` again to organise
+
+1. create a `QGroupBox`
+2. create a `QVBoxLayout` layout
+3. create the individual buttons ie. `QCheckBox`
+4. add them to the layout `layout.addWidget()`
+5. create a `QButtonGroup` to logically link the items
+6. add a `.setExclusive(True)` instruction
+
+note:
+
+- to set up "radio buttons" is the same process, `.setExclusive(True)` is not needed
+- using instead the class `QRadioButton` to create the objects/widgets
+- again using the `QGroupBox` class to group the items logically before hand
+
+---
