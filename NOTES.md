@@ -1220,3 +1220,90 @@ note:
 - (this may not be apparent until the window is stretched, as orginally the widgets will be at default size)
 
 ---
+
+## Grid Layout
+
+- grid layouts in pyside6 all me to build structures like i have previously when using html tags
+- here though, i am able to layout qtwidgets in a grid
+- with the top left box, having an index of (0,0)
+- we use indexes to determine where we want to position widgets in the grid layout
+- note; in a similar way to how we allocated `stretch` to widgets...
+- we can apply `rowSpan` or `columnSpan` to allow widgets to take up multiple index spots within the layout
+
+```python
+    grid_layout.addWidget(button_1,0,0)
+    grid_layout.addWidget(button_2,0,1,1,2)
+```
+
+- note; here button one will live at index (0,0) on the grid
+- button two, originates aaat (0,1), with the extra numbers identifying the column span and row span...
+- with the first two digits representing the location/origin of the widget
+- the next two after, detail the span row/column
+- ie. here the widget has a height of "1" and will extend a column to have the size of "2"
+
+note:
+
+- both `setSizePolicy` and `stretch` can be used in combination to have full control of the widget
+- even if the window is pulled out by the user or the size of the interface
+- here by using the `Expanding` option, the button will grow with windows size
+
+```python
+    button_3.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Expanding)
+```
+
+note:
+
+- it is better i test layouts and how they will react to window shapes/sizes, ensuring they react how i want
+- from here im able to now create signals/slots on the class objects (widgets)...
+
+---
+
+## QCheckBox & QRadioButton
+
+- "checkboxes" like in html allow the user to select/deselect as many options/boxes as they please
+- "radio buttons" however allow for one selected option maximum
+
+- to be able to group buttons within the system, by their type (ie. radio buttons)
+- i need to use the `QGroupBox` class
+- a layout i needed within the `QGroupBox` to organise the widgets inside (ie. `QHBoxLayout`)
+
+- the buttons/objects can now be created via the class `QCheckBox`
+- connected via `widget.toggled.connect(self.object_function)` which will allow them to be checked
+
+```python
+def object_function(self, checked):
+    if(checked):
+        print("is checked")
+    else:
+        print("not checked")
+```
+
+- once the buttons are defined, i can add them to my layout via `.addWidget(button_one)`
+- ie. `layout = QVBoxLayout()` -> `layout.addWidget(button_one)`
+- then this layout is added to the `QGroupBox` object via `.setLayout`
+- creating an organised layout of buttons inside the `QGroupBox` object
+- so layout; `window` -> `QGroupBox` -> `QVBoxLayout` -> `QCheckBox`
+- lastly note that `QGroupBox` is a widget not a layout object, meaning requires;
+
+```python
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(QGroupBox_object)
+        self.setLayout(main_layout)
+```
+
+## Working On This! (not finished)
+
+note:
+
+- the difference between "checkboxes" and "radiobuttons" is determined at grouping
+- by using `QButtonGroup(self)` <- (requires the parent argument)
+- the radio buttons are then declared via `.addButton()` on the `QButtonGroup(self)`
+- including the `group.setExclusive(True)` to confirm this characteristic
+
+```python
+    group = QButtonGroup(self)
+    group.addButton(1)
+    group.addButton(2)
+    group.addButton(3)
+    group.setExclusive(True)
+```
