@@ -1344,7 +1344,7 @@ note:
 2. `self.list.setSelectionMode(QAbstractItemView.MultSelection)`
 
 - via the object of `QListWidget` we can set the selective mode, multi/single selection
-- `setSelectionMode` is neccessary, along with the `QAbstractItemView` class + method
+- `setSelectionMode` is necessary, along with the `QAbstractItemView` class + method
 
 3. accessing my created `QListWidget` i can now add items:
 
@@ -1368,3 +1368,83 @@ note:
 ```
 
 - note; a layout if first created before the widget is added and both set to main
+
+5. now we are able to utilize `QListWidget` signals that include;
+
+- `currentItemChanged(currentItem)`, `currentRowChanged(currentRow)`
+- `currentTextChanged`, `itemActivated(item)`, `itemChanged`, `itemClicked`
+- `itemDoubleClicked`, `itemEntered`, `itemPressed`, `itemSelectionChanged`
+
+```python
+    self.list_widget.currentChanged.connect(self.item_changed)
+```
+
+- here i am able to pass the "current item" being changed by the user, to my slot
+
+```python
+    def item_changed(self, item):
+        print(f"Current item: {item.text()}")
+```
+
+- item itself is a object, to display the items text i must access its value inside
+- `currentTextChanged` can also be used to display text to the user...
+
+```python
+    self.list_widget.currentTextChanged.connect(self.text_changed)
+
+    def text_changed(self, text):
+        print("Text changed: ", text)
+```
+
+## QListWidget Buttons
+
+- i now want to add buttons to allow user actions on my list widget/values
+
+```python
+        add_item = QPushButton("Add Item")
+        add_item.clicked.connect(self.add_item_function)
+
+        delete_item = QPushButton("Delete Item")
+        delete_item.clicked.connect(self.delete_item_function)
+
+        item_count = QPushButton("Item Count")
+        item_count.clicked.connect(self.item_count_function)
+
+        selected_items = QPushButton("Selected Items")
+        selected_items.clicked.connect(self.selected_items_function)
+```
+
+- again im using a clicked signal to trigger my slots
+
+```python
+    def add_item_function(self):
+        self.list_widget.addItem("New Item")
+```
+
+- using premade functions to allow easy functionality...
+- by accessing the `QListWidget` i created, i can `addItem` to the list
+
+```python
+    def item_count_function(self):
+        print("Item count: ", self.list_widget.count())
+```
+
+- again via my list i can access its `.count()` printing it to the terminal
+
+```python
+    def delete_item_function(self):
+        self.list_widget.takeItem(self.list_widget.currentRow())
+```
+
+- allows me to `takeItem` from the list, on the `.currentRow()` of the list object
+- note; always remember that passing `self` is how im able to access these values
+
+```python
+    def selected_items_function(self):
+        list = self.list_widget.selectedItems()
+        for i in list:
+            print(i.text())
+```
+
+- lastly `selectedItems()` allows me access to all the values by the user
+- from the returned list i can loop through the items...
