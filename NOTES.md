@@ -1334,3 +1334,37 @@ note:
 - again using the `QGroupBox` class to group the items logically before hand
 
 ---
+
+## QListWidget
+
+- allows the user to produce a list within the interface, with functionality;
+- adding items, removing items, grab item count, select items, printing selected items
+
+1. `self.list = QListWidget(self)` is used to create a list object within the parent
+2. `self.list.setSelectionMode(QAbstractItemView.MultSelection)`
+
+- via the object of `QListWidget` we can set the selective mode, multi/single selection
+- `setSelectionMode` is neccessary, along with the `QAbstractItemView` class + method
+
+3. accessing my created `QListWidget` i can now add items:
+
+```python
+    self.list_widget = QListWidget(self)
+    self.list_widget.setSelectionMode(QAbstractItemView.MultiSelection)
+    self.list_widget.addItem("Soda")
+    self.list_widget.addItems(["Coke", "Pepsi"])
+```
+
+- note; i can either use the `add.item` method to add a single item
+- or i can use `addItems` which instead requires a list
+
+4. i can now create a layout for my window (which will hold the list) ie.
+
+```python
+        layout = QVBoxLayout()
+        layout.addWidget(self.list_widget)
+
+        self.setLayout(self.layout)
+```
+
+- note; a layout if first created before the widget is added and both set to main
