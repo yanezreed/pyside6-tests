@@ -1446,5 +1446,154 @@ note:
             print(i.text())
 ```
 
-- lastly `selectedItems()` allows me access to all the values by the user
-- from the returned list i can loop through the items...
+- lastly `selectedItems()` allows me access to all the values by the user, via a list
+
+---
+
+## QTabWidget
+
+- just like any modern day web browser, tabbing is essential for user navigation
+- to set up this structure within my own ui, i can follow these steps:
+
+1. create an instance of `QTabWidget(self)`, which will hold my tabs
+
+```python
+    tab_widget = QTabWidget(self)
+```
+
+2. create a `QWidget()` object, then create a `QHBoxLayout()` for the contents
+
+```python
+    widget_form = QWidget()
+    label_name = QLabel("Full name:")
+    line_edit_name = QLineEdit()
+    form_layout = QHBoxLayout()
+```
+
+3. adding various contents now to the layout, then in turn the layout to the widget
+
+```python
+    form_layout.addWidget(label_full_name)
+    form_layout.addWidget(line_edit_full_name)
+    widget_form.setLayout(form_layout)
+```
+
+4. i can now do this process over and over for new widgets, later adding them to `QTabWidget`
+
+```python
+    tab_widget.addTab(widget_form, "Users Details")
+    tab_widget.addTab(widget_next, "New Tab Test")
+```
+
+5. lastly i create a layout to hold the whole tabbed widget, then setting said layout to `self`
+
+```python
+    layout = QVBoxLayout()
+    layout.addWidget(tab_widget)
+
+    self.setLayout(layout)
+```
+
+- signals for `QTabWidget` include; `currentChanged`, `tabBarClicked`, `tabCloseRequest`
+- virtual functions also include; `initStyleOption`, `tabInserted` and `tabRemoved`
+
+---
+
+## QTComboBox + Important Recap
+
+- allows me to create drop down boxes in my windows
+- created again by calling `QComboBox(self)`, with items being added via `self.object.addItem()`
+- note; w/e is selected means it is the "current item" in the combo-box
+
+note:
+
+- when i created the object first time, i did not make it a "instance attribute" of my class
+- because of this i found that when i wanted to later access it, i was unable to
+- this is of course because the object as it was would only exist within `__init__`
+- meaning later in the program, its scope would not reach any of my functions
+- which is why assigning the widget to the class/object via `self` is so important
+
+- note; "parenting" a widget is different and also relative to this line of code
+- `QComboBox(self)` is an example of this
+- the objects parent is `self` (ie. current window) meaning;
+- it will appear inside the window/parent widget
+- when the window/widget is closed the object is consequently destroyed
+- but this does not mean im creating a python variable to access outside of `__init__`
+- ie. `print(self.box.currentText())` will not be possible
+
+* now i have a drop down box that the user can view/select values, i now need to add functionality
+* to do this i will need to utilize `QComboBox` methods;
+* `self.box.currentText()` allowing me access to the current selected items text
+* `self.box.currentIndex()` again allowing me access to the currently selected index
+* and `self.box.count()` will allow me to grab the amount of values within the `QComboBox`
+
+```python
+class tab_test(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.box = QComboBox(self)
+
+        self.box.addItem("Graves")
+        self.box.addItem("Azir")
+        self.box.addItem("Mundo")
+        self.box.addItem("Darius")
+        self.box.addItem("Luciano")
+
+        button_current_value = QPushButton("Current Value")
+        button_current_value.clicked.connect(self.current_value)
+        button_set_current = QPushButton("Set value")
+        button_set_current.clicked.connect(self.set_value)
+        button_get_values = QPushButton("Get values")
+        button_get_values.clicked.connect(self.get_values)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.box)
+        layout.addWidget(button_current_value)
+        layout.addWidget(button_set_current)
+        layout.addWidget(button_get_values)
+        layout.addSpacing(100)
+
+        self.setLayout(layout)
+
+    def current_value(self):
+        print("Current item:", self.box.currentText())
+        print("Current index:", self.box.currentIndex())
+
+    def set_value(self):
+        index_input = input("What index would you like? ")
+        try:
+            up_index = int(index_input)
+        except ValueError:
+            print("Input invalid")
+            return
+
+        temp = self.box.count()
+
+        if up_index > 0 or up_index < temp:
+            if up_index == 0 or up_index == temp + 1:
+                self.box.setCurrentIndex(up_index)
+            else:
+                self.box.setCurrentIndex(up_index - 1)
+        else:
+            print("Input invalid")
+
+    def get_values(self):
+        for i in range(self.box.count()):
+            print(f"index ({i}) : ", self.box.itemText(i))
+```
+
+note:
+
+1. `QComboBox(self)` made and stored within the class, meaning its accessible outside of `__init__`
+2. values within drop down box are made using `self.box.addItem("")`
+3. i can now create functionality, here im creating signals/slots
+4. widgets then added to layout + `.addSpacing` then set as `QWidget`'s layout
+5. i created my methods using premade functions accessing `QComboBox` values
+
+- ie. `currentText()`, `currentIndex()`, `count()`, `itemText()` and `setCurrentIndex()`
+- which is why it was so important to make `QComboBox(self)` accessible
+- note; other signals include `activated`, `currentIndexChanged`, `highlighted` and `textHighlighted`
+- i should always always be checking the documentation whenever using a widget
+
+---
