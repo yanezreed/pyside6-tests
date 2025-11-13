@@ -1597,3 +1597,59 @@ note:
 - i should always always be checking the documentation whenever using a widget
 
 ---
+
+## Qt Designer & Creator
+
+- is a program that allows me to build user interfaces just by dragging and dropping elements
+- the program produces a ".ui" file, we can then import this file into my pyside application
+- i must download this program separately to be able to use "Qt Designer" & "Qt Creator"
+
+---
+
+## Qt Designer
+
+- in my first task, im aiming to simply use the program to create a form to collect names/job info
+- to later import my work into my own pyside application
+
+note:
+
+- first ive created a folder to save all my user interface files
+- clicking "new form" i was able to select from various examples of widget/form templates
+- i selected a simple "widget" template so i could add all the functionality i need myself
+- to achieve the format i was after, i required two labels, line edits and one submission button
+
+- its important for me to keep in mind my "top level" widgets name, shown in the "objectName" property
+
+- i also edit the "objectName" of all my widgets, so i can reference them later in my python code
+- ie. "fullName_lineEdit", "occupation_lineEdit" and "submit_pushButton"
+
+- next i am able to select my widgets and create a layout for them
+- this is done by clicking a layout option from the toolbar menu above, here i choose a "vertical layout"
+- im also able to click on the "top level widget" and select a layout for all of my widgets
+- i can then manually reshape my widget to create a design style i want
+- next i can save the widget as "widget.ui"
+
+---
+
+## QUiLoader
+
+- `QUiLoader` is a class accessed through the `PySide6.QtUiTools` module
+- it allows me to load my designed widgets into my programs
+- using `loader.load("", None)` to load my widget files (on system), into my program
+- producing said object in code, ie. `window = loader.load("userdata.ui", None)`
+
+- to be able to access the values within my object, i will have to reference the various "objectName" values
+- ie. `print(window.fullName_lineEdit.text())` would allow me access to the "line edits" value in question
+
+- we are also able to create signals to my methods/slots in python
+- utilizing the "objectName" again of my submit button, or any signal that widget my offer
+- `window.submit_pushButton.clicked.connect(my_method)` will allow me to add functionality
+- note; `window` is used as that is the name of the object produced by the `loader.load` call
+- `window.show()` will be needed within python, as it will not by default if not prompted
+
+* `QUiLoader` however will come with a performance penalty, because the widget is loaded in "run time"
+* so we are effectively trading user experience for ease of development, which should be avoided
+
+* note; before using `loader` i must create this object via calling the class `loader = QUiLoader()`
+* also i need to remember that if i want to access text within a widget, `.text()` is needed
+* note; when running my tests, i really did notice a big delay when running the application!
