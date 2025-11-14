@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QApplication
-from tests.mainwindow import MainWindow
+from tests.test_mainwindow import MainWindow
 from sys import argv
 
 app = QApplication(argv)
