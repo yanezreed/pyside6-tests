@@ -1938,3 +1938,28 @@ app.exec()
 - i thought it would be easier to follow if i commented my code on this one!
 - note; i need to remember to set up my class with the imported/compiled python class
 - `Ui_Widget` <- a class in the file, not the file itself!
+
+note:
+
+- its important to compile resources using `pyside6-rcc` before adding them to my program
+- as the compiled resources become part of my program;
+
+- allowing me to keep them embedded inside my program within the `resource_rc.py` file
+- so theres no need to hold external images, avoiding broken paths/os system errors
+- as file paths can differ massively across other operating systems
+
+- this process also avoids loading images straight from github at runtime (slow loading)
+- also its possible github urls can change + dependency on a internet connect
+- note; in my own experience building this workspace, my image pathways are very fragile
+
+- also as i have found myself, using local files reveal my personal information
+- such as my username, folder names and cloud storage structure
+- in my case this was `OneDrive`
+
+tldr:
+
+1. compiled resources -> safe, portable, reliable, clean
+2. file paths -> break easily, expose your system, not portable
+3. github hosting -> slow, unreliable, bad practice
+
+---
