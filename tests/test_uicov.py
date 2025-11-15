@@ -2,7 +2,7 @@
 # to convert my `widget.ui` file, in my assests folder, to python code
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QApplication
-from ui_widget import Ui_Widget
+from assets.ui_widget import Ui_Widget
 from sys import argv
 
 class Widget(QWidget, Ui_Widget):

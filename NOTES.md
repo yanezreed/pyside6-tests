@@ -1963,3 +1963,35 @@ tldr:
 3. github hosting -> slow, unreliable, bad practice
 
 ---
+
+- im also able to avoid manually setting icons to widgets, ie.
+
+```python
+        plus_icon = QIcon("::\OneDrive\Pictures\plus.png")
+        minus_icon = QIcon(":\OneDrive\Pictures\minus.png")
+
+
+        self.plus_button.setIcon(plus_icon)
+        self.minus_button.setIcon(minus_icon)
+```
+
+- this still requires me to compile my `import resource_rc` file, importing it into my python code
+- as my `.ui` file will be looking for it
+
+- again this is achieved through the use of qt designer
+- my ensuring we have a resource file connected to the `.ui` file we are working on
+- we can go into the properties of the selected widgets -> icon properties
+- then by clicking on the downwards file and then "select resource"
+- here we can select the image/resource and it will appear into our design...
+
+- if i need to revisit this process; its at 4:37:37 and onwards in the video!
+
+- we can now save and recompile the file, each change -> must re compile
+- ie. `pyside6-uic widget.ui > ui_widget.py`
+- note; the resource file `resource.qrc` will not require this
+
+- import note; `.ui` file will always be looking for exactly `resource.qrc`
+- now with this file available in the workspace, i will not need to assign any resources myself
+- as the user interface file will now be connected to my resource...
+
+---

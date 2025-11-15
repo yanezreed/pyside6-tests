@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import QWidget, QApplication
 from PySide6.QtGui import QIcon
-from ui_widget import Ui_Widget
+from assets.ui_widget import Ui_Widget
 from sys import argv
 
-import resource_rc
+import assets.resource_rc as resource_rc
 
 class Widget(QWidget, Ui_Widget):
     def __init__(self):
