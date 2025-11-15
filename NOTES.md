@@ -8,9 +8,6 @@ installed:
 
    _(python 3.11.0 is the newest version that works with pyside6)_
 
-note : vs note : vs for me is a great option; being free and similar layout,
-regardless of the operating system (which could change later).
-
 ---
 
 ## Installation Steps
@@ -50,15 +47,7 @@ this is produced using:
 
 "PySide6.QtWidgets" refers to the submodule inside of the pyside6 module
 
-PySide6/
-├── QtWidgets/ ← submodule for GUI widgets
-├── QtCore/ ← core non-GUI functionality (signals, slots, etc.)
-├── QtGui/ ← graphics, fonts, images, etc.
-├── QtNetwork/ ← networking
-└── ... ← other submodules
-
 "sys.argv" is passed into the class "QApplication()"
-
 qt uses these arguments for things like:
 
 1. parsing qt-specific flags (e.g., -style, -platform, -reverse, etc.)
@@ -100,7 +89,8 @@ notes python, c++ (helping me understand via my c code knowledge):
 - "QWidget" receives mouse, keyboard and other events from the system
 - parent widgets are called a window, and have a frame and title bar
 - (which can also be edited using window flags), they accept two arguments on creation
-- "QWidget \*parent = nullptr" where if the value is the null pointer, it will by default be a window
+- "QWidget \*parent = nullptr" where if the value is the null pointer,<br>
+  it will by default be a window<br>
 - will also accept flags to alter its appearance and functionality
 
 ---
@@ -120,8 +110,8 @@ _("window.setCentralWidget(button)" is necessary here as)_
 - a status bar
 - and one central widget
 
-  _(when you call "setCentralWidget(widget)", you’re telling the "QMainWindow")_
-  _(“this is the main widget that fills the central area of the window.”)_
+  _(when you call "setCentralWidget(widget)", you’re telling the "QMainWindow")_ <br>
+  _(“this is the main widget that fills the central area of the window.”)_ <br>
 
 ---
 
@@ -197,18 +187,18 @@ note:
 * first initializing an object "init(self)" then accessing parents functionality through "super()"
 
 note (rubber ducking process):
-that unlike using a decorator i can just pass the parent class as a argument into the subclass,
-using "super().init" gives me access to the process the parent class executes (initializes) when
-creating its own objects.
+that unlike using a decorator i can just pass the parent class as a argument into the subclass,<br>
+using "super().init" gives me access to the process the parent class executes (initializes) when<br>
+creating its own objects.<br>
 
-meaning that when "init(self)" is used an object is initialized and can technically then use all
-of the functionality/methods of the parent via "self."
+meaning that when "init(self)" is used an object is initialized and can technically then use all<br>
+of the functionality/methods of the parent via "self."<br>
 
-but because i have included "super().init" im passing the values/functionality which are given to
-the parent classes objects, with the difference being i now have the ability to include more and more
-of code ie. more values "self.value = 2" or more functionality by adding methods in this new subclass
-(which will have to be compatible with the combination of code given to the object from
-both the subclass and parent class initialization)...
+but because i have included "super().init" im passing the values/functionality which are given to<br>
+the parent classes objects, with the difference being i now have the ability to include more and more<br>
+of code ie. more values "self.value = 2" or more functionality by adding methods in this new subclass<br>
+(which will have to be compatible with the combination of code given to the object from<br>
+both the subclass and parent class initialization)...<br>
 
 note:
 
@@ -428,8 +418,11 @@ notes:
 
 1. `self.setWindowTitle` used to import a tab-like title for the window
 2. buttons + signals/slots are created (giving them functionality)
-3. to actually locate the widgets onto my `QWidget` (inherited) i need to add my widgets to a `QV(or H)BoxLayout` (any sort of layout) and apply this layout to the `QWidget` using `self.setlayout(this_layout)`<br>
-4. lastly i can create methods/slots to react to my events
+3. to actually locate the widgets onto my `QWidget` (inherited)<br>
+   i need to add my widgets to a `QV(or H)BoxLayout`<br>
+   (any sort of layout) and apply this layout to the `QWidget`<br>
+   using `self.setlayout(this_layout)`<br>
+6. lastly i can create methods/slots to react to my events
 
 ```python
 
@@ -573,22 +566,22 @@ notes:
 
 - diving into how i can set up a menu-bar
 
-1. `menu_bar = self.menuBar()` taps into the inherited class to create a menu object
-2. `file_menu = menu_bar.addMenu("&File")` similarly allows me to create a file menu
-   which can be seen through examples such as photoshop, word or chrome...
-   this is achieved by tapping into the menu/objects functionality calling `add.menu`
-   and passing in the argument `(&File)`, producing a new object `file_menu`
-3. for `quit_action = file_menu.addAction(self.quit)` a `QAction` is created...
-   when the action is triggered, because it has been created with `.addaction` and...
-   the provided callable `self.quit` when the action is clicked the method is called
+1. `menu_bar = self.menuBar()` taps into the inherited class to create a menu object<br>
+2. `file_menu = menu_bar.addMenu("&File")` similarly allows me to create a file menu<br>
+   which can be seen through examples such as photoshop, word or chrome...<br>
+   this is achieved by tapping into the menu/objects functionality calling `add.menu`<br>
+   and passing in the argument `(&File)`, producing a new object `file_menu`<br>
+3. for `quit_action = file_menu.addAction(self.quit)` a `QAction` is created...<br>
+   when the action is triggered, because it has been created with `.addaction` and...<br>
+   the provided callable `self.quit` when the action is clicked the method is called<br>
 
-- note: `QAction` is an object where it can be triggered by multiple ways -> method
+- note: `QAction` is an object where it can be triggered by multiple ways -> method<br>
 
-4. ie. `quit_action.triggered.connect(self.quit)` is put in place to connect the
-   object/"QAction" with the slot/method via the use of `.triggered`
-5. i then am adding extra actions, via the use of `.addAction` keyword
-   these actions are inside the "edit" file in the menu, accessed via the object
-6. lastly im adding extra files to the `menu_bar` itself
+4. ie. `quit_action.triggered.connect(self.quit)` is put in place to connect the<br>
+   object/"QAction" with the slot/method via the use of `.triggered`<br>
+5. i then am adding extra actions, via the use of `.addAction` keyword<br>
+   these actions are inside the "edit" file in the menu, accessed via the object<br>
+6. lastly im adding extra files to the `menu_bar` itself<br>
 
 ```python
     toolbar = QToolBar("My main toolbar")
